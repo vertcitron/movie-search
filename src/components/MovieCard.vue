@@ -1,15 +1,16 @@
 <template>
   <div class="movie">
     <h5>{{movie.title}}</h5>
-    <img :src="$store.getters['movies/posterUrl'](movie.id)" onerror="this.src=''">
+    <img :src="movie.posterUrl" onerror="this.src=''">
   </div>
 </template>
 
 <script>
+import Movie from '../models/MovieClass'
 export default {
   name: 'MovieCard',
   props: {
-    movie: { type: Object, required: true }
+    movie: { type: Movie, required: true }
   }
 }
 </script>

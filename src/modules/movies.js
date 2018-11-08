@@ -1,6 +1,7 @@
 /** Store module to handle movies lists **/
 
 import Vue from 'vue'
+import Movie from '../models/MovieClass'
 
 export default {
   namespaced: true,
@@ -10,23 +11,11 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   getters: {
-    collection: state => state.movies,
-    movieById: state => id => {
-      for (const movie of state.movies) {
-        if (movie.id === id) return movie
-      }
-      return undefined
-    },
-    posterUrl: (state, getters, rootState, rootGetters) => id => {
-      const cfg = rootGetters['config/images']
-      const movie = getters.movieById(id)
-      return (cfg.base_url && movie) ? cfg.base_url + cfg.poster_sizes[0] + movie.poster_path : ''
-    }
+    collection: state => state.movies
   },
   // ----------------------------------------------------------------------------------
   mutations: {
     setMovies: (state, movies) => {
-      // uses Vue.set to be sure to be deeply reactive
       Vue.set(state, 'movies', movies)
     }
   },
@@ -46,7 +35,13 @@ export default {
       return Vue.axios.get(`search/movie`, { params })
         .then(response => {
           console.log(`search successfull for "${params.query}" : ${response.data.results.length} found.`)
-          context.commit('setMovies', response.data.results)
+          // convert all raw data movies to Movie class
+          const newCollection = []
+          for (const movie of response.data.results) {
+            newCollection.push(new Movie(movie))
+          }
+          // uses Vue.set to be sure to be deeply reactive
+          context.commit('setMovies', newCollection)
           return Promise.resolve(context.state.movies)
         })
         .catch(error => {
