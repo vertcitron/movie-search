@@ -5,21 +5,20 @@
     <h4>Example application to illustrate an article</h4>
     <p>
       <label>Type something to search</label>
-      <input v-model="search" type="text">
+      <input v-model="search" type="text" @keypress.enter="submitSearch">
       <button @click="submitSearch"> Search </button>
     </p>
-    <ol>
-      <li v-for="movie in movies" :key="movie.id">
-        {{ movie.title }}
-      </li>
-    </ol>
+    <div class="results">
+      <movie-card v-for="movie in movies" :key="movie.id" :movie="movie"></movie-card>
+    </div>
   </div>
 </template>
 
 <script>
+import MovieCard from './components/MovieCard'
 export default {
   name: 'app',
-  components: {},
+  components: { MovieCard },
   computed: {
     movies () {
       return this.$store.getters['movies/collection']
@@ -32,16 +31,22 @@ export default {
     submitSearch () {
       this.$store.dispatch('movies/search', this.search)
     }
+  },
+  created () {
+    this.$store.dispatch('config/get')
   }
 }
 </script>
 
 <style>
+body {
+  background-color: #eee;
+}
 #app {
   font-family: sans-serif;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 16px;
 }
 #app label {
   margin-right: 16px;
@@ -49,12 +54,11 @@ export default {
 #app input {
   margin-right: 16px;
 }
-#app ol {
-  text-align: left;
-  width: 50%;
-  margin: 32px auto 0 auto;
-}
-#app ol li {
-  line-height: 175%;
+#app .results {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 </style>
