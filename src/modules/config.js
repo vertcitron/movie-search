@@ -26,7 +26,6 @@ export default {
       // don't forget that an action should return a promise.
       return Vue.axios.get('configuration', { params })
         .then(response => {
-          // uses Vue.set to be sure to be deeply reactive
           context.commit('setImages', response.data.images)
           return Promise.resolve(context.state.movies)
         })

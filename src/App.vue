@@ -9,7 +9,9 @@
       <button @click="submitSearch"> Search </button>
     </p>
     <div class="results">
-      <movie-card v-for="movie in movies" :key="movie.id" :movie="movie"></movie-card>
+      <movie-card v-for="movie in $store.getters['movies/collection']"
+                  :key="movie.id"
+                  :movie="movie"></movie-card>
     </div>
   </div>
 </template>
@@ -19,13 +21,8 @@ import MovieCard from './components/MovieCard'
 export default {
   name: 'app',
   components: { MovieCard },
-  computed: {
-    movies () {
-      return this.$store.getters['movies/collection']
-    }
-  },
   data () {
-    return { search: 'Harry Potter' }
+    return { search: '' }
   },
   methods: {
     submitSearch () {

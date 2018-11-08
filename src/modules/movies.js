@@ -15,6 +15,7 @@ export default {
   // ----------------------------------------------------------------------------------
   mutations: {
     setMovies: (state, movies) => {
+      // uses Vue.set to be sure to be deeply reactive
       Vue.set(state, 'movies', movies)
     }
   },
@@ -34,7 +35,6 @@ export default {
       return Vue.axios.get(`search/movie`, { params })
         .then(response => {
           console.log(`search successfull for "${params.query}" : ${response.data.results.length} found.`)
-          // uses Vue.set to be sure to be deeply reactive
           context.commit('setMovies', response.data.results)
           return Promise.resolve(context.state.movies)
         })
