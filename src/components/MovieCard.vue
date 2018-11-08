@@ -1,7 +1,7 @@
 <template>
   <div class="movie">
     <h5>{{movie.title}}</h5>
-    <img :src="posterUrl">
+    <img :src="$store.getters['movies/posterUrl'](movie.id)" onerror="this.src=''">
   </div>
 </template>
 
@@ -10,12 +10,6 @@ export default {
   name: 'MovieCard',
   props: {
     movie: { type: Object, required: true }
-  },
-  computed: {
-    posterUrl () {
-      const imgConf = this.$store.getters['config/images']
-      return imgConf.base_url + imgConf.poster_sizes[0] + this.movie.poster_path
-    }
   }
 }
 </script>

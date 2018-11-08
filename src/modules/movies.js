@@ -10,7 +10,18 @@ export default {
   },
   // ----------------------------------------------------------------------------------
   getters: {
-    collection: state => state.movies
+    collection: state => state.movies,
+    movieById: state => id => {
+      for (const movie of state.movies) {
+        if (movie.id === id) return movie
+      }
+      return undefined
+    },
+    posterUrl: (state, getters, rootState, rootGetters) => id => {
+      const cfg = rootGetters['config/images']
+      const movie = getters.movieById(id)
+      return (cfg.base_url && movie) ? cfg.base_url + cfg.poster_sizes[0] + movie.poster_path : ''
+    }
   },
   // ----------------------------------------------------------------------------------
   mutations: {
