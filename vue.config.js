@@ -1,3 +1,3 @@
 module.exports = {
-  baseUrl: '/movie-search/'
+  publicPath: '/movie-search/'
 }
