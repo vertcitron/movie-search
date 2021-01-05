@@ -10,7 +10,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "push-dir": "^0.4.1",
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
